@@ -34,7 +34,7 @@ const ShiftStatistics = ({ shift }) => {
       if (!shift) return;
 
       try {
-        const response = await fetch("http://localhost:5000/api/stats");
+        const response = await fetch("https://patient-managment-backend.vercel.app/api/stats");
         const data = await response.json();
         setStats({
           ...data,
