@@ -5,7 +5,6 @@ function AddMedicineForm({ onMedicineAdded }) {
     const [medicine, setMedicine] = useState({ name: '' });
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setMedicine((prevState) => ({
@@ -20,7 +19,7 @@ function AddMedicineForm({ onMedicineAdded }) {
         setErrorMessage('');
 
         try {
-            const response = await axios.post('http://localhost:5000/api/medicines/add', medicine);
+            const response = await axios.post('https://patient-managment-backend.vercel.app/api/medicines/add', medicine);
 
             if (response.data) {
                 setSuccessMessage(response.data.message || 'Medicine added successfully');
@@ -49,7 +48,7 @@ function AddMedicineForm({ onMedicineAdded }) {
     };
 
     return (
-        <div className="h-screen mx-auto p-6 bg-gray-900 shadow-lg rounded-lg text-gray-300 relative">
+         <div className="h-screen mx-auto p-6 bg-gray-900 shadow-lg rounded-lg text-gray-300 relative">
             <h2 className="text-3xl font-bold text-[#E3E3E3] mb-4 font-cairo">! اضف دواء جديد</h2>
 
             {successMessage && (
@@ -67,7 +66,7 @@ function AddMedicineForm({ onMedicineAdded }) {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-sm font-medium text-[#E3E3E3] mb-1 font-cairo">
-                        اسم الدواء:
+                        Medicine Name
                     </label>
                     <input
                         type="text"
@@ -81,30 +80,11 @@ function AddMedicineForm({ onMedicineAdded }) {
 
                 <button
                     type="submit"
-                    className="w-[60%] p-2 bg-[#2a9f67] hover:bg-[#3fd98f] text-white font-bold rounded transition duration-200 font-cairo"
+                    className="w-[60%] py-3 rounded-lg text-white font-medium transition-transform duration-200 transform hover:scale-[1.02] bg-violet-600 hover:bg-violet-700 active:scale-[0.98] shadow-lg shadow-violet-500/20 font-cairo"
                 >
-                    ! اضف الدواء
+                    Add Medicine!
                 </button>
             </form>
-
-            {/* Bottom-right corner lines */}
-            <div className="absolute bottom-5 right-5 text-[#E3E3E3] bg-[#2a9f67] py-[1.25rem] px-[7.5rem] rounded-3xl text-lg font-semibold space-y-1 text-right font-cairo">
-                <p>اقراص: tab</p>
-                <p>شراب: syr</p>
-                <p>كبسولات: cap</p>
-                <p>حقن: inj</p>
-                <p>محلول: solution</p>
-                <p>بخاخ: spray</p>
-                <p>غسول: lotion</p>
-                <p>فوار: eff</p>
-                <p>مرهم: oint</p>
-                <p>قطرة: drop</p>
-                <p>لبوس: supp</p>
-                <p>جل: gel</p>
-                <p>مضاد حيوي: antibiotic</p>
-                <p>مضاد حيوي شراب: antibiotic syr</p>
-                <p>مضاد حيوي حقن: antibiotic inj</p>
-            </div>
         </div>
     );
 }

@@ -17,3 +17,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@media print {
+  .one-page-print {
+    page-break-after: avoid;
+    page-break-before: avoid;
+    page-break-inside: avoid;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+}

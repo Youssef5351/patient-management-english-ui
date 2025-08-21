@@ -1,9 +1,12 @@
 import React, { useState,useEffect } from "react";
 import api from "../api/axios";
 import axios from "axios";
-
+import ShiftStatistics from "./ShiftStatistics";
 function PatientForm() {
   const [shift, setShift] = useState(null); // Track selected shift
+  const [patients, setPatients] = useState([]); // Patients in the current shift
+  const [revenue, setRevenue] = useState(0); // Revenue for the current shift
+  const [activeTab, setActiveTab] = useState("addPatient"); // Manage active tab
   const [patient, setPatient] = useState({
     name: "",
     age: "",
@@ -23,7 +26,7 @@ function PatientForm() {
     if (successMessage) {
       timeoutId = setTimeout(() => {
         setSuccessMessage("");
-      }, 2000);
+      }, 1000);
     }
     
     // Cleanup function to clear timeout if component unmounts or message changes
@@ -34,8 +37,11 @@ function PatientForm() {
     };
   }, [successMessage]);
 
+
+
   const handleShiftSelection = (selectedShift) => {
     setShift(selectedShift);
+    setActiveTab("addPatient");
     setShiftCompleted(false);
   };
   const handleSubmit = async (e) => {
@@ -46,15 +52,22 @@ function PatientForm() {
 
     try {
       const response = await api.post("/api/patients", { ...patient, shift }); // Include shift info
-      setSuccessMessage("تم إضافة المريض بنجاح!");
+      setSuccessMessage("Patient added successfully!");
       setShowPrescription(true);
+      setPatient({
+        name: "",
+        age: "",
+        symptoms: "",
+        visitDate: new Date().toISOString().split("T")[0],
+        status: "waiting",
+    });
     } catch (error) {
       setError(error.response?.data?.message || "فشل في إضافة المريض");
     } finally {
       setSubmitting(false);
     }
   };
-
+  
   const handleCompleteShift = async () => {
     try {
       const payload = {
@@ -98,20 +111,20 @@ function PatientForm() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900 font-cairo">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-gray-100">اختيار فترة العمل</h2>
-          <p className="text-gray-400">اختر فترة العمل الحالية قبل البدء بإضافة المرضى</p>
+          <h2 className="text-2xl font-bold text-gray-100">Choose Current Shift</h2>
+          <p className="text-gray-400">Select Current Shift Period Before Adding Patients</p>
           <div className="space-x-4">
             <button
               onClick={() => handleShiftSelection("morning")}
               className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg"
             >
-              الفترة الصباحية
+              Morning Shift
             </button>
             <button
               onClick={() => handleShiftSelection("night")}
               className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
             >
-              الفترة المسائية
+              Night Shift
             </button>
           </div>
         </div>
@@ -121,11 +134,12 @@ function PatientForm() {
 
   return (
     <div className="min-h-screen p-6 bg-gray-900 font-cairo">
+      <ShiftStatistics shift={shift} />
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-100 text-center">
-          إضافة مريض جديد - {shift === "morning" ? "الفترة الصباحية" : "الفترة المسائية"}
+          Adding New Patients - {shift === "morning" ? "Morning Shift" : "Night Shift"}
         </h2>
-        <p className="mt-2 text-center text-gray-400">أدخل بيانات المريض الجديد</p>
+        <p className="mt-2 text-center text-gray-400">Enter New Patient Data</p>
       </div>
 
       {error && (
@@ -143,44 +157,44 @@ function PatientForm() {
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-1">اسم المريض</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">Patient Name</label>
             <input
               type="text"
               name="name"
               value={patient.name}
               onChange={handleChange}
               className="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-              placeholder="أدخل اسم المريض..."
+              placeholder="Enter Patient Name..."
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-1">العمر</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">Age</label>
             <input
               type="number"
               name="age"
               value={patient.age}
               onChange={handleChange}
               className="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-              placeholder="أدخل عمر المريض..."
+              placeholder="Enter Patient Age..."
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-200 mb-1">العنوان</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">Address</label>
             <textarea
               name="symptoms"
               value={patient.symptoms}
               onChange={handleChange}
               className="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               rows={4}
-              placeholder="أدخل عنوان المريض..."
+              placeholder="Enter patient address..."
               required
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-200 mb-1">
-              تاريخ الزيارة
+              Visit Date
             </label>
             <input
               type="date"
@@ -203,7 +217,7 @@ function PatientForm() {
               : "bg-violet-600 hover:bg-violet-700 active:scale-[0.98] shadow-lg shadow-violet-500/20"
           }`}
         >
-          {submitting ? "جارٍ الإضافة..." : "إضافة المريض"}
+          {submitting ? "Adding patient..." : "Add Patient"}
         </button>
       </form>
 
@@ -216,7 +230,7 @@ function PatientForm() {
             : "bg-red-600 hover:bg-red-700 active:scale-[0.98] shadow-lg shadow-red-500/20"
         }`}
       >
-        {completingShift ? "جارٍ تسليم الشيفت..." : "تسليم الشيفت"}
+        {completingShift ? "Completing shift..." : "Complete Shift"}
       </button>
     </div>
   );
