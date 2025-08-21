@@ -65,7 +65,7 @@ function PatientForm() {
         status: "waiting",
     });
     } catch (error) {
-      setError(error.response?.data?.message || "فشل في إضافة المريض");
+      setError(error.response?.data?.message || "Error Adding Patient");
     } finally {
       setSubmitting(false);
     }
@@ -79,7 +79,7 @@ function PatientForm() {
       };
       console.log("Sending payload:", payload);
       
-      const response = await axios.put("http://localhost:5000/api/shifts/complete", payload);
+      const response = await axios.put("https://patient-managment-backend.vercel.app/api/shifts/complete", payload);
       console.log("Shift completed:", response.data);
       
       // Directly set shift to null instead of setting shiftCompleted to true
