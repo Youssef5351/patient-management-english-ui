@@ -23,7 +23,7 @@ function MedicineAdminList() {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await axios.get('http://localhost:5000/api/medicines');
+            const response = await axios.get('https://patient-managment-backend.vercel.app/api/medicines');
             setMedicines(response.data);
         } catch (error) {
             console.error('Error fetching medicines:', error);
@@ -37,7 +37,7 @@ function MedicineAdminList() {
         if (!deleteConfirmation) return;
 
         try {
-            await axios.delete(`http://localhost:5000/api/medicines/${deleteConfirmation}`);
+            await axios.delete(`https://patient-managment-backend.vercel.app/api/medicines/${deleteConfirmation}`);
             
             // Remove the medicine from local state
             setMedicines(prevMedicines => 
