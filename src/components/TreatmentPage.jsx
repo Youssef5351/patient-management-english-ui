@@ -304,7 +304,7 @@ const TreatmentForm = () => {
 useEffect(() => {
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/medicines');
+      const response = await axios.get('https://patient-managment-backend.vercel.app/api/medicines');
       const options = response.data.map((medicine) => ({
         value: medicine._id,
         label: medicine.name
@@ -332,7 +332,7 @@ const handleSubmit = async (e) => {
   setSuccessMessage('');
 
   try {
-    await axios.post('http://localhost:5000/api/treatment/add', treatment);
+    await axios.post('https://patient-managment-backend.vercel.app/api/treatment/add', treatment);
     setSuccessMessage('Treatment plan saved successfully!');
     setShowPrescription(true);
   } catch (error) {
@@ -355,7 +355,7 @@ const handlePrint = async () => {
 
     // Post the medicine usage data only when printing
     const response = await axios.post(
-      "http://localhost:5000/api/medicine-usage/track",
+      "https://patient-managment-backend.vercel.app/api/medicine-usage/track",
       medicineUsageData
     );
     console.log("Medicine usage tracking response for print:", response.data);
