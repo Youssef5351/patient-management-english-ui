@@ -25,7 +25,7 @@ const Dashboard = ({ token }) => {
         const fetchStats = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:5000/api/stats', {
+                const response = await axios.get('https://patient-managment-backend.vercel.app/api/stats', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setStats(response.data);
@@ -49,7 +49,7 @@ const Dashboard = ({ token }) => {
         // Fetch daily reports from the backend
         const fetchReports = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/daily-reports');
+                const response = await axios.get('https://patient-managment-backend.vercel.app/api/daily-reports');
                 setReports(response.data);
                 setLoading(false);
             } catch (err) {
