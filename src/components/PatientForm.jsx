@@ -2,10 +2,10 @@ import React, { useState,useEffect } from "react";
 import api from "../api/axios";
 import axios from "axios";
 import ShiftStatistics from "./ShiftStatistics";
+
 function PatientForm() {
   const [shift, setShift] = useState(null); // Track selected shift
-  const [patients, setPatients] = useState([]); // Patients in the current shift
-  const [revenue, setRevenue] = useState(0); // Revenue for the current shift
+  // eslint-disable-next-line no-unused-vars
   const [activeTab, setActiveTab] = useState("addPatient"); // Manage active tab
   const [patient, setPatient] = useState({
     name: "",
@@ -14,11 +14,14 @@ function PatientForm() {
     visitDate: new Date().toISOString().split('T')[0],
     status: "waiting",
   });
+  // eslint-disable-next-line no-unused-vars
   const [shiftCompleted, setShiftCompleted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [completingShift, setCompletingShift] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [showPrescription, setShowPrescription] = useState(false);
 
   useEffect(() => {
@@ -37,13 +40,12 @@ function PatientForm() {
     };
   }, [successMessage]);
 
-
-
   const handleShiftSelection = (selectedShift) => {
     setShift(selectedShift);
     setActiveTab("addPatient");
     setShiftCompleted(false);
   };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -51,6 +53,7 @@ function PatientForm() {
     setSuccessMessage("");
 
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await api.post("/api/patients", { ...patient, shift }); // Include shift info
       setSuccessMessage("Patient added successfully!");
       setShowPrescription(true);
@@ -86,25 +89,12 @@ function PatientForm() {
     }
   };
   
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPatient((prev) => ({
       ...prev,
       [name]: name === "age" ? Number(value) : value,
     }));
-  };
-
-  const handleReturnToForm = () => {
-    setShowPrescription(false);
-    setPatient({
-      name: "",
-      age: "",
-      symptoms: "",
-      visitDate: new Date().toISOString().split("T")[0],
-      status: "waiting",
-    });
-    setSuccessMessage("");
   };
 
   if (!shift) {
