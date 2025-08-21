@@ -16,7 +16,7 @@ function MedicineManager() {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await axios.get('http://localhost:5000/api/medicines', {
+            const response = await axios.get('https://patient-managment-backend.vercel.app/api/medicines', {
                 // Add caching prevention
                 headers: {
                     'Cache-Control': 'no-cache',
@@ -47,7 +47,7 @@ function MedicineManager() {
     const handleMedicineAdded = async (newMedicine) => {
         try {
             // First, send the new medicine to the backend
-            const response = await axios.post('http://localhost:5000/api/medicines/add', newMedicine);
+            const response = await axios.post('https://patient-managment-backend.vercel.app/api/medicines/add', newMedicine);
             
             // If successful, update the local state
             setMedicines(prevMedicines => {
