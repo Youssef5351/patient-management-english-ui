@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
@@ -21,7 +21,7 @@ function DoctorPage() {
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching patients:', err);
-                setError('Failed to fetch patient list. Please try again.');
+                setError('فError Loading patients');
                 setLoading(false);
             }
         };
@@ -58,7 +58,7 @@ function DoctorPage() {
             <div className="min-h-screen bg-gray-900 flex items-center justify-center font-cairo">
                 <div className="text-gray-300 flex items-center space-x-2">
                     <div className="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span>Loading...</span>
+                    <span>Loading..</span>
                 </div>
             </div>
         );
@@ -78,16 +78,16 @@ function DoctorPage() {
         <div className="min-h-screen bg-gray-900 p-6 font-cairo relative">
         <div className="max-w-6xl mx-auto">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-100 text-center">Doctor Portal</h2>
+                <h2 className="text-2xl font-bold text-gray-100 text-center">بوابة الطبيب</h2>
                 <p className="mt-2 text-center text-gray-400">
-                    Patient list in the waiting room
+                   Patient Waiting
                 </p>
                 <div className="flex justify-center mt-4">
                 <button 
     className="px-[4.5rem] py-2 bg-violet-500 text-gray-100 font-medium rounded-lg shadow hover:bg-violet-600 transition-colors duration-200"
     onClick={() => window.open("/dashboard", "_blank")}
 >
-    Today's Revenue
+    Day Revenue
 </button>
 
         </div>
@@ -96,7 +96,7 @@ function DoctorPage() {
 
                 <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
                     {patients.length === 0 ? (
-                        <p className="text-center text-gray-400">No patients in the waiting room</p>
+                        <p className="text-center text-gray-400">No Patients Waiting/p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {patients.map((patient) => (
@@ -114,18 +114,18 @@ function DoctorPage() {
                                     <div className="space-y-2 relative">
                                         <h3 className="font-medium text-gray-100 text-lg">{patient.name}</h3>
                                         <div className="flex justify-between text-gray-300">
-                                            <span>Age:</span>
+                                            <span>العمر:</span>
                                             <span>{patient.age}</span>
                                         </div>
                                         <div className="flex justify-between text-gray-300">
-                                            <span>Registration Date:</span>
+                                            <span>Visit Date:</span>
                                             <span dir="ltr">
-                                                {new Date(patient.visitDate).toLocaleDateString('en-US')}
+                                                {new Date(patient.visitDate).toLocaleDateString('ar-EG')}
                                             </span>
                                         </div>
                                         <div className="mt-3 pt-3 border-t border-gray-600">
                                             <p className="text-gray-300">
-                                                <span className="text-gray-400">Symptoms: </span>
+                                                <span className="text-gray-400">Address: </span>
                                                 {patient.symptoms}
                                             </p>
                                         </div>
