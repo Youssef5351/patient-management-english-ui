@@ -96,7 +96,7 @@ function DoctorPage() {
 
                 <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
                     {patients.length === 0 ? (
-                        <p className="text-center text-gray-400">No Patients Waiting/p>
+                        <p className="text-center text-gray-400">No Patients Waiting</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {patients.map((patient) => (
