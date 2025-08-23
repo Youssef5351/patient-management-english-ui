@@ -28,7 +28,7 @@ function DoctorPage() {
 
         fetchPatients();
         console.log('Setting up initial fetch and refresh interval');
-        fetchPatients();
+        
         const interval = setInterval(fetchPatients, 3000);
         
         return () => {
@@ -78,7 +78,7 @@ function DoctorPage() {
         <div className="min-h-screen bg-gray-900 p-6 font-cairo relative">
         <div className="max-w-6xl mx-auto">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-100 text-center">بوابة الطبيب</h2>
+                <h2 className="text-2xl font-bold text-gray-100 text-center">Doctor Portal</h2>
                 <p className="mt-2 text-center text-gray-400">
                    Patient Waiting
                 </p>
